@@ -1,0 +1,336 @@
+﻿Structure du dossier
+Le numéro de série du volume est 000000F5 9E60:4BB1
+C:\XAMPP\HTDOCS\DEKKON\APP
+├───Actions
+│   ├───Cart
+│   │       AddItemToCartAction.php
+│   │       RecalculateCartAction.php
+│   │       RemoveCartItemAction.php
+│   │       UpdateCartItemAction.php
+│   │       
+│   ├───Delivery
+│   │       AssignDriverAction.php
+│   │       UpdateDeliveryStatusAction.php
+│   │       
+│   ├───Order
+│   │       ApplyPromotionToOrderAction.php
+│   │       CalculateOrderTotalsAction.php
+│   │       CancelOrderAction.php
+│   │       ChangeOrderStatusAction.php
+│   │       ConfirmOrderAction.php
+│   │       CreateOrderSnapshotAction.php
+│   │       PlaceOrderAction.php
+│   │       
+│   ├───Payment
+│   │       ConfirmPaymentAction.php
+│   │       FailPaymentAction.php
+│   │       InitiatePaymentAction.php
+│   │       RefundPaymentAction.php
+│   │       
+│   └───Stock
+│           AdjustStockAction.php
+│           CheckStockAvailabilityAction.php
+│           DecrementStockAction.php
+│           IncrementStockAction.php
+│           ReleaseStockAction.php
+│           ReserveStockAction.php
+│           
+├───Broadcasting
+│       DeliveryChannel.php
+│       OrderChannel.php
+│       
+├───Casts
+│       MoneyCast.php
+│       
+├───Console
+│   └───Commands
+│           CancelUnpaidOrders.php
+│           CheckLowStockLevels.php
+│           CleanOldNotifications.php
+│           ReleaseExpiredCartReservations.php
+│           
+├───Contracts
+│       PaymentGatewayInterface.php
+│       
+├───DTOs
+│       CartItemData.php
+│       CheckoutData.php
+│       OrderData.php
+│       PaymentData.php
+│       
+├───Enums
+│       CartStatus.php
+│       DeliveryStatus.php
+│       DriverStatus.php
+│       EmployeeStatus.php
+│       OrderStatus.php
+│       PaymentMethod.php
+│       PaymentStatus.php
+│       ProductStatus.php
+│       PromotionType.php
+│       ReviewStatus.php
+│       StockMovementType.php
+│       UserStatus.php
+│       
+├───Events
+│       OrderPlaced.php
+│       OrderStatusChanged.php
+│       PaymentSucceeded.php
+│       StockLevelLow.php
+│       
+├───Exceptions
+│   ├───Auth
+│   │       AccountNotVerifiedException.php
+│   │       AccountSuspendedException.php
+│   │       InvalidCredentialsException.php
+│   │       UnauthorizedActionException.php
+│   │       
+│   ├───Cart
+│   │       CartEmptyException.php
+│   │       CartItemNotFoundException.php
+│   │       MultipleActiveCartException.php
+│   │       
+│   ├───Catalog
+│   │       CategoryHasProductsException.php
+│   │       ProductNotAvailableException.php
+│   │       VariantInactiveException.php
+│   │       
+│   ├───Delivery
+│   │       DeliveryAlreadyAssignedException.php
+│   │       DriverNotAvailableException.php
+│   │       
+│   ├───Order
+│   │       InvalidOrderStatusTransitionException.php
+│   │       OrderCannotBeCancelledException.php
+│   │       OrderNotFoundForUserException.php
+│   │       
+│   ├───Payment
+│   │       DuplicatePaymentException.php
+│   │       PaymentAlreadyProcessedException.php
+│   │       PaymentGatewayException.php
+│   │       
+│   ├───Promotion
+│   │       PromotionExpiredException.php
+│   │       PromotionLimitReachedException.php
+│   │       PromotionMinimumAmountException.php
+│   │       
+│   └───Stock
+│           InsufficientStockException.php
+│           InvalidStockMovementException.php
+│           StockReservationExpiredException.php
+│           
+├───Http
+│   ├───Controllers
+│   │   │   Controller.php
+│   │   │   
+│   │   └───Api
+│   │       └───V1
+│   │           ├───Admin
+│   │           │       ActivityLogController.php
+│   │           │       CategoryController.php
+│   │           │       DeliveryController.php
+│   │           │       DriverController.php
+│   │           │       EmployeeController.php
+│   │           │       InventoryController.php
+│   │           │       OrderController.php
+│   │           │       PaymentController.php
+│   │           │       PermissionController.php
+│   │           │       ProductController.php
+│   │           │       ProductImageController.php
+│   │           │       ProductVariantController.php
+│   │           │       PromotionController.php
+│   │           │       RoleController.php
+│   │           │       StockMovementController.php
+│   │           │       
+│   │           └───Client
+│   │                   AddressController.php
+│   │                   AuthController.php
+│   │                   CartController.php
+│   │                   CategoryController.php
+│   │                   FavoriteController.php
+│   │                   NotificationController.php
+│   │                   OrderController.php
+│   │                   PaymentController.php
+│   │                   ProductController.php
+│   │                   ProfileController.php
+│   │                   ReviewController.php
+│   │                   
+│   ├───Middleware
+│   │       CheckPermission.php
+│   │       CheckRole.php
+│   │       EnsureAccountIsActive.php
+│   │       EnsureUserIsEmployee.php
+│   │       
+│   ├───Requests
+│   │   ├───Admin
+│   │   │       AssignDeliveryRequest.php
+│   │   │       AssignPermissionRequest.php
+│   │   │       StockMovementRequest.php
+│   │   │       StoreCategoryRequest.php
+│   │   │       StoreEmployeeRequest.php
+│   │   │       StoreProductRequest.php
+│   │   │       StorePromotionRequest.php
+│   │   │       StoreRoleRequest.php
+│   │   │       StoreVariantRequest.php
+│   │   │       UpdateCategoryRequest.php
+│   │   │       UpdateEmployeeRequest.php
+│   │   │       UpdateOrderStatusRequest.php
+│   │   │       UpdateProductRequest.php
+│   │   │       UpdateVariantRequest.php
+│   │   │       
+│   │   └───Client
+│   │           AddToCartRequest.php
+│   │           CheckoutRequest.php
+│   │           LoginRequest.php
+│   │           RegisterRequest.php
+│   │           StoreAddressRequest.php
+│   │           StoreReviewRequest.php
+│   │           UpdateAddressRequest.php
+│   │           UpdateCartItemRequest.php
+│   │           UpdateProfileRequest.php
+│   │           
+│   └───Resources
+│       ├───Admin
+│       │       ActivityLogResource.php
+│       │       CategoryResource.php
+│       │       DeliveryResource.php
+│       │       DriverResource.php
+│       │       EmployeeResource.php
+│       │       InventoryResource.php
+│       │       OrderResource.php
+│       │       PaymentResource.php
+│       │       PermissionResource.php
+│       │       ProductResource.php
+│       │       ProductVariantResource.php
+│       │       PromotionResource.php
+│       │       RoleResource.php
+│       │       StockMovementResource.php
+│       │       
+│       └───Client
+│               AddressResource.php
+│               CartResource.php
+│               CategoryResource.php
+│               FavoriteResource.php
+│               NotificationResource.php
+│               OrderResource.php
+│               ProductResource.php
+│               ProductVariantResource.php
+│               ProfileResource.php
+│               ReviewResource.php
+│               
+├───Jobs
+│       ProcessPaymentJob.php
+│       ReleaseExpiredCartReservationsJob.php
+│       SendPushNotificationJob.php
+│       
+├───Listeners
+│       LogOrderActivity.php
+│       NotifyLowStock.php
+│       RecordOrderStatusHistory.php
+│       SendOrderStatusNotification.php
+│       SendPaymentConfirmation.php
+│       
+├───Mail
+│       ResetPasswordMail.php
+│       VerifyAccountMail.php
+│       WelcomeMail.php
+│       
+├───Models
+│       ActivityLog.php
+│       Address.php
+│       Cart.php
+│       CartItem.php
+│       Category.php
+│       Customer.php
+│       Delivery.php
+│       Driver.php
+│       Employee.php
+│       Favorite.php
+│       Inventory.php
+│       Notification.php
+│       Order.php
+│       OrderAddress.php
+│       OrderItem.php
+│       OrderPromotion.php
+│       OrderStatusHistory.php
+│       Payment.php
+│       Permission.php
+│       Product.php
+│       ProductImage.php
+│       ProductVariant.php
+│       Promotion.php
+│       Review.php
+│       Role.php
+│       StockMovement.php
+│       User.php
+│       
+├───Observers
+│       InventoryObserver.php
+│       OrderObserver.php
+│       PaymentObserver.php
+│       ProductObserver.php
+│       
+├───Policies
+│       AddressPolicy.php
+│       CartPolicy.php
+│       EmployeePolicy.php
+│       OrderPolicy.php
+│       ProductPolicy.php
+│       ReviewPolicy.php
+│       
+├───Providers
+│       AppServiceProvider.php
+│       EventServiceProvider.php
+│       
+├───Rules
+│       PhoneNumberFormat.php
+│       
+├───Services
+│   ├───Auth
+│   │       AuthenticationService.php
+│   │       PermissionService.php
+│   │       
+│   ├───Cart
+│   │       CartService.php
+│   │       
+│   ├───Catalog
+│   │       CategoryTreeService.php
+│   │       ProductQueryService.php
+│   │       
+│   ├───Delivery
+│   │       DeliveryService.php
+│   │       
+│   ├───Inventory
+│   │       InventoryService.php
+│   │       LowStockAlertService.php
+│   │       
+│   ├───Notification
+│   │       ActivityLoggerService.php
+│   │       NotificationService.php
+│   │       
+│   ├───Order
+│   │       OrderNumberGeneratorService.php
+│   │       OrderService.php
+│   │       
+│   ├───Payment
+│   │       PaymentGatewayService.php
+│   │       PaymentService.php
+│   │       
+│   └───Promotion
+│           PromotionService.php
+│           PromotionValidatorService.php
+│           
+├───Support
+│   │   ApiResponse.php
+│   │   Money.php
+│   │   PaginationHelper.php
+│   │   UuidGenerator.php
+│   │   
+│   └───Helpers
+│           api_response.php
+│           money.php
+│           
+└───Traits
+        ApiResponder.php
+        HasUuid.php
+        
