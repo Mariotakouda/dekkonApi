@@ -17,8 +17,9 @@ class DeliveryResource extends JsonResource
             ]),
             'driver' => $this->when($this->relationLoaded('driver') && $this->driver, fn () => [
                 'id' => $this->driver->id,
-                'name' => $this->driver->employee->fullName(),
+                'name' => $this->driver->employee?->fullName() ?? '—',
                 'vehicle_type' => $this->driver->vehicle_type,
+                'status' => $this->driver->status,
             ]),
             'status' => $this->status,
             'delivery_fee' => $this->delivery_fee,
