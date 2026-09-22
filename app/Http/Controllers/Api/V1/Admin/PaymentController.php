@@ -17,8 +17,8 @@ class PaymentController extends Controller
     public function index(Request $request): JsonResponse
     {
         $payments = Payment::with('order')
-            ->when($request->query('status'), fn ($q, $s) => $q->where('status', $s))
-            ->when($request->query('method'), fn ($q, $m) => $q->where('method', $m))
+            ->when($request->query('status'), fn($q, $s) => $q->where('status', $s))
+            ->when($request->query('method'), fn($q, $m) => $q->where('method', $m))
             ->latest()
             ->paginate($request->integer('per_page', 20));
 

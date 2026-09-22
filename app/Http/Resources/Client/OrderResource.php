@@ -38,6 +38,7 @@ class OrderResource extends JsonResource
                 'method' => $this->payments->last()->method,
                 'status' => $this->payments->last()->status,
                 'amount' => $this->payments->last()->amount,
+                'phone_number' => $this->payments->last()->phone_number,
             ] : null),
             'status_history' => $this->whenLoaded('statusHistory', fn () => $this->statusHistory->map(fn ($h) => [
                 'status' => $h->status,

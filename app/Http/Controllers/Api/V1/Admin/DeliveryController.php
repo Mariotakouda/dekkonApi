@@ -32,7 +32,7 @@ class DeliveryController extends Controller
     {
         $driver = Driver::findOrFail($request->driver_id);
 
-        $delivery = $action->execute($delivery, $driver);
+        $delivery = $action->execute($delivery, $driver, $request->user());
 
         return $this->success(new DeliveryResource($delivery), 'Livreur affecté.');
     }
@@ -48,6 +48,7 @@ class DeliveryController extends Controller
             $delivery,
             DeliveryStatus::from($request->status),
             $request->input('failure_reason'),
+            $request->user(),
         );
 
         return $this->success(new DeliveryResource($delivery), 'Statut de livraison mis à jour.');

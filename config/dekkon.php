@@ -9,5 +9,8 @@ return [
         'public_key' => env('FEDAPAY_PUBLIC_KEY'),
         'secret_key' => env('FEDAPAY_SECRET_KEY'),
         'environment' => env('FEDAPAY_ENVIRONMENT', 'sandbox'),
+        // Secret de l'endpoint webhook (Workbench → Webhooks → l'endpoint → "Click to reveal").
+        // Différent entre sandbox et live, et différent du secret_key ci-dessus.
+        'webhook_secret' => env('FEDAPAY_WEBHOOK_SECRET'),
     ],
 ];

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\Admin\ActivityLogController;
 use App\Http\Controllers\Api\V1\Admin\CategoryAttributeController;
 use App\Http\Controllers\Api\V1\Admin\CategoryController;
+use App\Http\Controllers\Api\V1\Admin\DashboardController;
 use App\Http\Controllers\Api\V1\Admin\DeliveryController;
 use App\Http\Controllers\Api\V1\Admin\DriverController;
 use App\Http\Controllers\Api\V1\Admin\EmployeeController;
@@ -19,6 +20,10 @@ use App\Http\Controllers\Api\V1\Admin\StockMovementController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum', 'active', 'employee'])->group(function () {
+
+    // Auto-filtré par permission à l'intérieur du contrôleur : accessible à
+    // tout employé, chaque bloc de chiffres dépendant de sa propre permission.
+    Route::get('dashboard/stats', [DashboardController::class, 'stats']);
 
     Route::middleware('permission:employees.manage')->group(function () {
         Route::apiResource('employees', EmployeeController::class);

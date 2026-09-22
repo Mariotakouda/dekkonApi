@@ -36,30 +36,20 @@ class ConfirmPaymentAction
             if ($verification['status'] === 'approved') {
                 $payment->markAsSuccessful();
 
-                if ($verification['status'] === 'approved') {
-                    $payment->markAsSuccessful();
-
-                    $payment->order->update(['status' => OrderStatus::CONFIRMED, 'confirmed_at' => now()]);
-
-                    $payment->order->statusHistory()->create([
-                        'status' => OrderStatus::CONFIRMED,
-                        'comment' => 'Paiement confirmé via Fedapay.',
-                    ]);
-
-                    \App\Events\PaymentSucceeded::dispatch($payment);
-                } else {
-                    $payment->markAsFailed();
-                }
-
                 $payment->order->update(['status' => OrderStatus::CONFIRMED, 'confirmed_at' => now()]);
 
                 $payment->order->statusHistory()->create([
                     'status' => OrderStatus::CONFIRMED,
                     'comment' => 'Paiement confirmé via Fedapay.',
                 ]);
-            } else {
+
+                \App\Events\PaymentSucceeded::dispatch($payment);
+            } elseif (in_array($verification['status'], ['declined', 'canceled'], true)) {
                 $payment->markAsFailed();
             }
+            // Tout autre statut (ex: 'pending') : on ne touche à rien, le
+            // paiement reste PROCESSING en attendant un prochain callback
+            // (retry Fedapay) — voir section webhooks : jusqu'à 9 tentatives.
 
             return $payment->fresh();
         });

@@ -19,6 +19,7 @@ class Payment extends Model
         'transaction_reference',
         'provider',
         'method',
+        'phone_number',
         'status',
         'amount',
         'paid_at',

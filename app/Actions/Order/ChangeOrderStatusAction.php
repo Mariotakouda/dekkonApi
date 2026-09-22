@@ -2,6 +2,7 @@
 
 namespace App\Actions\Order;
 
+use App\Enums\DeliveryStatus;
 use App\Enums\OrderStatus;
 use App\Events\OrderStatusChanged;
 use App\Exceptions\Order\InvalidOrderStatusTransitionException;
@@ -29,6 +30,16 @@ class ChangeOrderStatusAction
             }
 
             $order->update($updates);
+
+            // La commande est prête : on crée l'enregistrement de livraison
+            // qui permettra à l'admin de l'affecter à un livreur (aucun
+            // Delivery n'existe avant cette étape).
+            if ($target === OrderStatus::READY_FOR_DELIVERY && ! $order->delivery) {
+                $order->delivery()->create([
+                    'status' => DeliveryStatus::PENDING,
+                    'delivery_fee' => $order->delivery_fee,
+                ]);
+            }
 
             $order->statusHistory()->create([
                 'status' => $target,

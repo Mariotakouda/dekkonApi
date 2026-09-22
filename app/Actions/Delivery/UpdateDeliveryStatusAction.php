@@ -2,21 +2,27 @@
 
 namespace App\Actions\Delivery;
 
+use App\Actions\Order\ChangeOrderStatusAction;
 use App\Enums\DeliveryStatus;
 use App\Enums\DriverStatus;
 use App\Enums\OrderStatus;
 use App\Models\Delivery;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class UpdateDeliveryStatusAction
 {
-    public function execute(Delivery $delivery, DeliveryStatus $status, ?string $failureReason = null): Delivery
+    public function __construct(private readonly ChangeOrderStatusAction $changeOrderStatus)
     {
-        return DB::transaction(function () use ($delivery, $status, $failureReason) {
+    }
+
+    public function execute(Delivery $delivery, DeliveryStatus $status, ?string $failureReason = null, ?User $changedBy = null): Delivery
+    {
+        return DB::transaction(function () use ($delivery, $status, $failureReason, $changedBy) {
             match ($status) {
                 DeliveryStatus::PICKED_UP => $delivery->markAsPickedUp(),
-                DeliveryStatus::OUT_FOR_DELIVERY => $delivery->markAsOutForDelivery(),
-                DeliveryStatus::DELIVERED => $this->handleDelivered($delivery),
+                DeliveryStatus::OUT_FOR_DELIVERY => $this->handleOutForDelivery($delivery, $changedBy),
+                DeliveryStatus::DELIVERED => $this->handleDelivered($delivery, $changedBy),
                 DeliveryStatus::FAILED => $delivery->markAsFailed($failureReason ?? 'Non précisé'),
                 default => $delivery->update(['status' => $status]),
             };
@@ -30,16 +36,33 @@ class UpdateDeliveryStatusAction
         });
     }
 
-    private function handleDelivered(Delivery $delivery): void
+    private function handleOutForDelivery(Delivery $delivery, ?User $changedBy): void
+    {
+        $delivery->markAsOutForDelivery();
+
+        $order = $delivery->order;
+        if ($order->status->canTransitionTo(OrderStatus::OUT_FOR_DELIVERY)) {
+            $this->changeOrderStatus->execute(
+                $order,
+                OrderStatus::OUT_FOR_DELIVERY,
+                $changedBy,
+                'Le livreur a récupéré la commande.',
+            );
+        }
+    }
+
+    private function handleDelivered(Delivery $delivery, ?User $changedBy): void
     {
         $delivery->markAsDelivered();
 
         $order = $delivery->order;
-        $order->update(['status' => OrderStatus::DELIVERED, 'delivered_at' => now()]);
-
-        $order->statusHistory()->create([
-            'status' => OrderStatus::DELIVERED,
-            'comment' => 'Livraison confirmée.',
-        ]);
+        if ($order->status->canTransitionTo(OrderStatus::DELIVERED)) {
+            $this->changeOrderStatus->execute(
+                $order,
+                OrderStatus::DELIVERED,
+                $changedBy,
+                'Livraison confirmée.',
+            );
+        }
     }
 }
